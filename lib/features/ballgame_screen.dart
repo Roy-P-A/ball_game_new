@@ -35,7 +35,7 @@ class BallGameScreen extends StatelessWidget {
                   //left: false,
                   right: false,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                     child: Row(
                       children: [
                         BallGameView(controller: controller,),

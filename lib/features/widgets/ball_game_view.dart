@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:balloon_pop/utils/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import '../ballgame.dart';
@@ -13,6 +11,10 @@ class BallGameView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final smallDevices = MediaQuery.of(context).size.width < 550;
+    //final largerDevices = MediaQuery.of(context).size.width >= 1100;
+    final tab = MediaQuery.of(context).size.width < 1300 &&
+        MediaQuery.of(context).size.width >= 800;
     return Expanded(
       child: SizedBox(
         width: double.infinity,
@@ -21,20 +23,26 @@ class BallGameView extends StatelessWidget {
           children: [
             Center(
               child: MediaQuery(
-                data: const MediaQueryData(textScaleFactor: 1),
+                data: const MediaQueryData(textScaleFactor:0.9),
                 child: Text(
                   'I have ${controller.totalNumberOfBalls} soccer balls. I need 1/${controller.denominator} of them.How many do I need?',
-                  style: AppTheme.activityTheme.textTheme.headline4
-                      ?.copyWith(color: Colors.white),
+                  style: smallDevices
+                      ? AppTheme.activityTheme.textTheme.headline6
+                          ?.copyWith(color: Colors.white)
+                      : tab
+                          ? AppTheme.activityTheme.textTheme.headline1
+                              ?.copyWith(color: Colors.white)
+                          : AppTheme.activityTheme.textTheme.headline4
+                              ?.copyWith(color: Colors.white),
                 ),
               ),
             ),
             Expanded(
-              flex: 8,
+              flex: 7,
               child: GridView.count(
                 crossAxisSpacing: 0,
                 //physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 6,
+                crossAxisCount: 8,
                 children: List.generate(
                   controller.totalNumberOfBalls,
                   (index) => oneBallUi(index),

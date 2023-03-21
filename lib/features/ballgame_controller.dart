@@ -1,14 +1,16 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
+
 import 'package:balloon_pop/mixins/snackbar_mixin.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rive/rive.dart';
+import 'package:just_audio/just_audio.dart';
+
 
 class BallGameController extends GetxController with SnackbarMixin {
   final _totalNumberOfBalls = 40.obs;
   int get totalNumberOfBalls => _totalNumberOfBalls.value;
 
-    final _denominator = 3.obs;
+    final _denominator = 5.obs;
   int get denominator => _denominator.value;
 
   final _expectedScore = 0.obs;
@@ -25,11 +27,14 @@ class BallGameController extends GetxController with SnackbarMixin {
 
   bool isSuccess = false;
 
-  AssetsAudioPlayer player1 = AssetsAudioPlayer();
+  late AudioPlayer audioPlayer;
+
+ 
 
   @override
   void onInit() {
     super.onInit();
+    audioPlayer = AudioPlayer();
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
@@ -43,23 +48,27 @@ class BallGameController extends GetxController with SnackbarMixin {
       iconList1.add(const RiveAnimation.asset('assets/rive/ball_click.riv'));
     }
 
-    player1.open(Audio('assets/audio/Win.mp3'),
-        autoStart: false, showNotification: true);
+    // audioPlayer.open(Audio('assets/audio/Win.mp3'),
+    //     autoStart: false, showNotification: true);
+  }
+
+   Future<void> playSoundWin() async {
+    await audioPlayer.setAsset('assets/audio/Win.mp3');
+    await audioPlayer.play();
   }
 
   @override
   void dispose() {
-    player1.dispose();
+    audioPlayer.dispose();
     super.dispose();
   }
 
   tapfunction(index) async{
-    isImageVisibleList1[index] ? player1.play() : null;
+    isImageVisibleList1[index] ? playSoundWin() : null;
     isImageVisibleList1[index] ? countIncrease() : null;
     isImageVisibleList1[index] = false;
-    //isSuccess = actualScore == expectedScore;
-    //await Future.delayed(const Duration(milliseconds: 2000));
-    //onTappedDoneButton();
+    
+    onTappedDoneButton();
   
     update();
   }
@@ -69,17 +78,17 @@ class BallGameController extends GetxController with SnackbarMixin {
   }
 
   onTappedDoneButton() {
-    if (actualScore == 0) {
-      showErrorSnackbar(title: 'Error', message: 'Incomplete game');
-      return;
-    }
+    // if (actualScore == 0) {
+    //   showErrorSnackbar(title: 'Error', message: 'Incomplete game');
+    //   return;
+    // }
 
     isSuccess = actualScore == expectedScore;
 
     if (isSuccess) {
       showSuccessSnackbar(
           title: 'Success', message: 'You got the correct answer');
-    } else {
+    } else if(actualScore > expectedScore){
       showErrorSnackbar(title: 'Error', message: 'Incorrect answer');
     }
   }
