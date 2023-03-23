@@ -37,6 +37,7 @@ class BallGameScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         BallGameView(controller: controller,),
                         _sideMenu(),
@@ -53,7 +54,7 @@ class BallGameScreen extends StatelessWidget {
   Widget _sideMenu() {
     final BallGameController controller = Get.find();
 
-    return Column(
+    return Obx(()=>Column(
       //mainAxisAlignment: MainAxisAlignment.center,
       children: [
         AnimatedOpacity(
@@ -80,7 +81,7 @@ class BallGameScreen extends StatelessWidget {
               "assets/images/buttons/repeat.png",
             ),
             iconSize: iconSize,
-            onPressed: () {},
+            onPressed: () =>controller.reloadfunction(),
           ),
         ),
         const SizedBox(
@@ -102,10 +103,10 @@ class BallGameScreen extends StatelessWidget {
           height: 5,
         ),
         AnimatedOpacity(
-          opacity: 1,
+          opacity: controller.isEnableDoneButton ? 1 : 0.5,
           duration: const Duration(microseconds: 300),
           child: TRIconButton(
-              isEnabled: true,
+              isEnabled: controller.isEnableDoneButton,
               padding: EdgeInsets.zero,
               icon: Image.asset(
                 "assets/images/buttons/done.png",
@@ -135,7 +136,7 @@ class BallGameScreen extends StatelessWidget {
           ],
         )
       ],
-    );
+    ),);
   }
 }
 

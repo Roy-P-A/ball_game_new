@@ -20,6 +20,7 @@ class BallGameView extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(
               child: MediaQuery(
@@ -42,7 +43,7 @@ class BallGameView extends StatelessWidget {
               child: GridView.count(
                 crossAxisSpacing: 0,
                 //physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 8,
+                crossAxisCount: 10,
                 children: List.generate(
                   controller.totalNumberOfBalls,
                   (index) => oneBallUi(index),
